@@ -1,21 +1,42 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { User } from "./entity/User";
+import { Grades } from './entity/Grades';
 
 createConnection().then(async connection => {
 
-  console.log("Inserting a new user into the database...");
+  const UserRepository = connection.getRepository('User');
+  const GradeRepository = connection.getRepository('Grades');
+
+  // const user = addUser();
+  // await UserRepository.save(user);
+
+  // const grades = addGrades(await UserRepository.findOne({id: 5}));
+  // await GradeRepository.save(grades);
+
+  // const data = await connection.manager.find(User);
+  const userData = await UserRepository.find();
+  const gradesData = await GradeRepository.find({relations: ['test']});
+  console.log(userData);
+  console.log(gradesData);
+
+}).catch(error => console.log(error));
+
+function addUser() {
   const user = new User();
+  user.id = 99;
   user.firstName = "Timber";
   user.lastName = "Saw";
   user.age = 25;
-  await connection.manager.save(user);
-  console.log("Saved a new user with id: " + user.id);
+  return user;
+}
 
-  console.log("Loading users from the database...");
-  const users = await connection.manager.find(User);
-  console.log("Loaded users: ", users);
-
-  console.log("Here you can setup and run express/koa/any other framework.");
-
-}).catch(error => console.log(error));
+function addGrades(data) {
+  const grades = new Grades();
+  grades.id = '002';
+  grades.name = 'lxy';
+  grades.grades = 100;
+  grades.isQualified = true;
+  grades.test = data;
+  return grades;
+}
