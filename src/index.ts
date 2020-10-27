@@ -2,23 +2,11 @@ import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { User } from "./entity/User";
 import { Grades } from './entity/Grades';
+import { test } from './lib';
 
 createConnection().then(async connection => {
 
-  const UserRepository = connection.getRepository('User');
-  const GradeRepository = connection.getRepository('Grades');
-
-  // const user = addUser();
-  // await UserRepository.save(user);
-
-  // const grades = addGrades(await UserRepository.findOne({id: 5}));
-  // await GradeRepository.save(grades);
-
-  // const data = await connection.manager.find(User);
-  const userData = await UserRepository.find();
-  const gradesData = await GradeRepository.find({relations: ['test']});
-  console.log(userData);
-  console.log(gradesData);
+  test(connection, { tableName: 'User'});
 
 }).catch(error => console.log(error));
 
