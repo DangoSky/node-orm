@@ -1,17 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn } from "typeorm";
+import { Entity, Column, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn()
+  name: string;
 
   @Column()
-  firstName: string;
+  password: string;
 
   @Column()
-  lastName: string;
+  dbId: string;
 
-  @Column()
-  age: number;
-
+  constructor(data) {
+    const {
+      name = '',
+      password = '',
+      dbId = ''
+    } = data || {};
+    this.name = name;
+    this.password = password;
+    this.dbId = dbId;
+  }
 }
